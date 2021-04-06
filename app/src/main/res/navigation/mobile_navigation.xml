@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.converto.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_image_to_text"
+        android:name="com.example.converto.ui.gallery.ImageToTextFragment"
+        android:label="@string/menu_audio_to_text"
+        tools:layout="@layout/fragment_image_to_text" />
+
+    <fragment
+        android:id="@+id/nav_audio_to_text"
+        android:name="com.example.converto.ui.audio.AudioToTextFragment"
+        android:label="@string/menu_audio_to_text"
+        tools:layout="@layout/fragment_audio_to_text" />
+    <fragment
+        android:id="@+id/nav_text_translate"
+        android:name="com.example.converto.ui.text.translateTextFragment"
+        android:label="@string/menu_text_translate"
+        tools:layout="@layout/fragment_translate_text" />
+</navigation>

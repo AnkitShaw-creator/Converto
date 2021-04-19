@@ -19,6 +19,8 @@
     <string name="menu_text_translate">Translate text</string>
     <string name="translate_dialog">Translating ...</string>
     <string name="interchange_the_language">Interchange the language</string>
+    <string name="enter_text_here">Enter text here</string>
+    <string name="converted_text_will_be_shown_here">Converted text will be shown here</string>
 
 
     <string-array name="languages">

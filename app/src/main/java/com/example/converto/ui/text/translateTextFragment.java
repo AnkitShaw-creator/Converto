@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.converto.R;
 import com.google.mlkit.nl.translate.TranslateLanguage;
@@ -31,11 +33,12 @@ import com.google.mlkit.nl.translate.TranslatorOptions;
 
 public class translateTextFragment extends Fragment {
 
-    private TextView mDisplayText;
-    private EditText mTranslateText;
+    private TextView mDisplayText; // to display the translated text
+    private EditText mTranslateText; // to take text to translate as input
     private Spinner mTextLanguageSpinner;
-    private ImageButton mInterchange;
+    private Button mInterchange;
     private Spinner mTranslationLanguageSpinner;
+    private Button mTranslateButton;
 
     private String textLanguage;
     private String translationLanguage;
@@ -60,6 +63,7 @@ public class translateTextFragment extends Fragment {
         mTextLanguageSpinner = root.findViewById(R.id.text_language_spinner);
         mInterchange = root.findViewById(R.id.interchange_button);
         mTranslationLanguageSpinner = root.findViewById(R.id.translation_language_spinner);
+        mTranslateButton = root.findViewById(R.id.button_translate);
 
         ArrayAdapter<languageViewModel.Language> languageAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item,viewModel.getAvailableLanguage());
         languageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -85,8 +89,9 @@ public class translateTextFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 translationLanguage = String.valueOf(parent.getSelectedItem());
-                mDisplayText.setText(R.string.translate_dialog);
+                //mDisplayText.setText(R.string.translate_dialog);
                 viewModel.targetLang.setValue(languageAdapter.getItem(position));
+                viewModel.translatedText.setValue(new languageViewModel.ResultOrError("",null));
                 viewModel.downloadModel(languageAdapter.getItem(position));
             }
 
@@ -95,9 +100,11 @@ public class translateTextFragment extends Fragment {
                 mDisplayText.setText("");
             }
         });
+
         mTranslateText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //Toast.makeText(getContext(), "Before text changed", Toast.LENGTH_SHORT).show();
 
             }
 
@@ -108,23 +115,35 @@ public class translateTextFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
+                Toast.makeText(getContext(), "After text changed", Toast.LENGTH_SHORT).show();
                 mDisplayText.setText(R.string.translate_dialog);
-                viewModel.sourceText.setValue(s.toString());
+                viewModel.sourceText.setValue(mTranslateText.getText().toString());
             }
         });
-
-        viewModel.translatedText.observe(getViewLifecycleOwner(), new Observer<languageViewModel.ResultOrError>() {
+        mTranslateButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onChanged(languageViewModel.ResultOrError resultOrError) {
-                if(resultOrError.error != null){
-                    mTranslateText.setError(resultOrError.error.getLocalizedMessage());
-                }
-                else{
-                    mDisplayText.setText(resultOrError.result);
-                }
+            public void onClick(View v) {
+                String s = mTranslateText.getText().toString();
+                viewModel.sourceText.setValue(s);
+                mDisplayText.setText(R.string.translate_dialog);
+
+                viewModel.translatedText.observe(getViewLifecycleOwner(), new Observer<languageViewModel.ResultOrError>() {
+                    @Override
+                    public void onChanged(languageViewModel.ResultOrError resultOrError) {
+                        if(resultOrError.error != null){
+                            String x = resultOrError.error.getLocalizedMessage();
+                            mTranslateText.setError(x);
+                            Log.e("TAG_TTF", " Error = "+ x );
+                        }
+                        else{
+                            String s=resultOrError.result;
+                            mDisplayText.setText(s);
+                            Log.d("TAG_TTF", " Result = "+s);
+                        }
+                    }
+                });
             }
         });
-
         return root;
     }
 }

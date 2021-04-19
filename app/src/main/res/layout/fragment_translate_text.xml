@@ -5,7 +5,7 @@
     android:id="@+id/nav_text_translate"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:backgroundTint="#FFFFFF"
     android:padding="16dp"
     tools:context=".ui.text.translateTextFragment">
 
@@ -29,14 +29,15 @@
             android:textAlignment="center"
             android:textColor="#000000" />
 
-        <ImageButton
+        <Button
             android:id="@+id/interchange_button"
-            android:layout_width="wrap_content"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="32dp"
             android:layout_height="match_parent"
             android:layout_weight="0.25"
-            android:backgroundTint="#00BCD4"
-            app:icon="@drawable/ic_interchange"
-            android:contentDescription="@string/interchange_the_language" />
+            android:foreground="@drawable/ic_interchange"
+            android:foregroundTint="#F50057"
+            app:iconPadding="8dp" />
 
         <Spinner
             android:id="@+id/translation_language_spinner"
@@ -56,9 +57,11 @@
         android:background="#3F51B5"
         android:ems="10"
         android:gravity="center"
+        android:hint="@string/converted_text_will_be_shown_here"
         android:padding="16dp"
-        android:text="Converted text will be shown here"
+        android:text=""
         android:textColor="#FFFFFF"
+        android:textColorHint="@color/white"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -68,20 +71,36 @@
     <EditText
         android:id="@+id/text_editView"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="250dp"
         android:layout_marginTop="40dp"
-        android:background="#FFFFFF"
         android:ems="10"
-        android:hint="Enter text here"
+        android:hint="@string/enter_text_here"
         android:inputType="textLongMessage|textAutoCorrect|textWebEditText|textMultiLine|text"
         android:lineSpacingMultiplier="1"
         android:padding="16dp"
         android:textAlignment="viewStart"
+        android:textColor="@color/black"
+        android:textColorHint="@color/design_default_color_on_secondary"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.812"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_holder" />
+
+    <Button
+        android:id="@+id/button_translate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="9dp"
+        android:backgroundTint="#00E676"
+        android:text="Translate"
+        android:textColor="#C51162"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/translated_text_tv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_editView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
